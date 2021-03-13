@@ -33,7 +33,7 @@ namespace Trajectory
                 StartSpeed * (float) Math.Cos(AngleInRad),
                 StartSpeed * (float) Math.Sin(AngleInRad));
 
-            while (currentPoint.Y >= 0)
+            while (true)  //TODO refactor
             {
                 yield return new TrajectoryPoint(currentTime, currentPoint);
                 
@@ -42,6 +42,13 @@ namespace Trajectory
                     timeIntervalInSeconds, currentPoint, currentSpeed);
                 currentSpeed = CalculateNextSpeed(
                     currentSpeed, timeIntervalInSeconds);
+
+                if (currentPoint.Y < 0)
+                {
+                    var lastPoint = new PointF(currentPoint.X, 0);
+                    yield return new TrajectoryPoint(currentTime, lastPoint);
+                    yield break;
+                }
             }
         }
 
