@@ -7,27 +7,27 @@ namespace Trajectory
 {
     public class TrajectoryCalculatorWithResistance
     {
-        public float StartSpeed { get; }  // TODO Maybe Vector2 ???
-        public float AngleInRad { get; }
-        public PointF StartPoint { get; }
-        public float ResistanceCoefficient { get; }
-        public float Mass { get; }
-        
-        private Vector2 StartSpeedVector => new Vector2( //todo use something instead Vector2 ???
-            StartSpeed * (float) Math.Cos(AngleInRad),
-            StartSpeed * (float) Math.Sin(AngleInRad));
-
         private const float G = 9.81f;
 
-        public TrajectoryCalculatorWithResistance(  // TODO create builder or configuration class
-            float startSpeed, float angleInDeg, float mass, PointF startPoint, float resistanceCoefficient)
+        public TrajectoryCalculatorWithResistance( // TODO create builder or configuration class
+            PointF startPoint, float startSpeed, float angleInDeg, float mass, float resistanceCoefficient)
         {
             StartSpeed = startSpeed;
             AngleInRad = angleInDeg * (float) Math.PI / 180;
             StartPoint = startPoint;
-            ResistanceCoefficient = resistanceCoefficient;  // TODO in equation - k(t) ???
+            ResistanceCoefficient = resistanceCoefficient; // TODO in equation - k(t) ???
             Mass = mass;
         }
+
+        public float StartSpeed { get; } // TODO Maybe Vector2 ???
+        public float AngleInRad { get; }
+        public PointF StartPoint { get; }
+        public float ResistanceCoefficient { get; }
+        public float Mass { get; }
+
+        private Vector2 StartSpeedVector => new Vector2( //todo use something instead Vector2 ???
+            StartSpeed * (float) Math.Cos(AngleInRad),
+            StartSpeed * (float) Math.Sin(AngleInRad));
 
         public IEnumerable<TrajectoryPoint> GetPoints(float timeIntervalInSeconds)
         {
@@ -35,10 +35,10 @@ namespace Trajectory
             var currentPoint = StartPoint;
             var currentSpeed = StartSpeedVector;
 
-            while (true)  //TODO refactor
+            while (true) //TODO refactor
             {
                 yield return new TrajectoryPoint(currentTime, currentPoint);
-                
+
                 currentTime += timeIntervalInSeconds;
                 currentPoint = CalculateNextPoint(
                     timeIntervalInSeconds, currentPoint, currentSpeed);
@@ -68,8 +68,8 @@ namespace Trajectory
             var nextY = currentPoint.Y + dt * currentSpeed.Y;
 
             return new PointF(
-                (float)Math.Round(nextX, 4),
-                (float)Math.Round(nextY, 4));
+                (float) Math.Round(nextX, 4),
+                (float) Math.Round(nextY, 4));
         }
     }
 }

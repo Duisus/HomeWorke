@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 
 namespace Trajectory
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var parser = new CommandLineParser(args);
 
             var parsedArgs = GetParsedArgs(parser.GetArgValueByName("source"));
-            
+
             var points = CreateTrajectoryCalculator(parsedArgs)
                 .GetPoints(parsedArgs["interval"]);
 
@@ -28,7 +29,8 @@ namespace Trajectory
                 str => float.Parse(str, CultureInfo.InvariantCulture));
         }
 
-        private static TrajectoryCalculator CreateTrajectoryCalculator(Dictionary<string, float> parsedArgs)
+        private static TrajectoryCalculatorWithResistance CreateTrajectoryCalculator(
+            Dictionary<string, float> parsedArgs)
         {
             float x0 = 0;
             float y0 = 0;
@@ -36,9 +38,13 @@ namespace Trajectory
                 x0 = startX;
             if (parsedArgs.TryGetValue("y0", out var startY))
                 y0 = startY;
-            
-            return new TrajectoryCalculator(
-                parsedArgs["speed"], parsedArgs["angle"], x0, y0);
+
+            return new TrajectoryCalculatorWithResistance(
+                new PointF(x0, y0),
+                parsedArgs["speed"],
+                parsedArgs["angle"],
+                parsedArgs["mass"],
+                parsedArgs["k"]);
         }
     }
 }

@@ -7,12 +7,12 @@ namespace Trajectory
     public class CommandLineParser
     {
         private readonly IEnumerable<string> args;
-        
+
         public CommandLineParser(IEnumerable<string> args)
         {
             this.args = args.Select(str => str.ToLower());
         }
-        
+
         public Dictionary<string, T> ParseWithFunc<T>(Func<string, T> parseFunc)
         {
             return args
