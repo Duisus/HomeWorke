@@ -12,6 +12,10 @@ namespace Trajectory
         public PointF StartPoint { get; }
         public float ResistanceCoefficient { get; }
         public float Mass { get; }
+        
+        private Vector2 StartSpeedVector => new Vector2( //todo use something instead Vector2 ???
+            StartSpeed * (float) Math.Cos(AngleInRad),
+            StartSpeed * (float) Math.Sin(AngleInRad));
 
         private const float G = 9.81f;
 
@@ -29,9 +33,7 @@ namespace Trajectory
         {
             var currentTime = 0.0f;
             var currentPoint = StartPoint;
-            var currentSpeed = new Vector2(  //todo use something instead Vector2 ???
-                StartSpeed * (float) Math.Cos(AngleInRad),
-                StartSpeed * (float) Math.Sin(AngleInRad));
+            var currentSpeed = StartSpeedVector;
 
             while (true)  //TODO refactor
             {
