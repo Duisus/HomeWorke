@@ -9,31 +9,27 @@ namespace Trajectory
     {
         private const float G = 9.81f;
 
+        public float StartSpeed { get; }
+        public float AngleInRad { get; }
+        public PointF StartPoint { get; }
+        public float ResistanceCoefficient { get; }
+        public float Mass { get; }
+
         public TrajectoryCalculatorWithResistance( // TODO create builder or configuration class
             PointF startPoint, float startSpeed, float angleInDeg, float mass, float resistanceCoefficient)
         {
             StartSpeed = startSpeed;
             AngleInRad = angleInDeg * (float) Math.PI / 180;
             StartPoint = startPoint;
-            ResistanceCoefficient = resistanceCoefficient; // TODO in equation - k(t) ???
+            ResistanceCoefficient = resistanceCoefficient;
             Mass = mass;
         }
-
-        public float StartSpeed { get; } // TODO Maybe Vector2 ???
-        public float AngleInRad { get; }
-        public PointF StartPoint { get; }
-        public float ResistanceCoefficient { get; }
-        public float Mass { get; }
-
-        private Vector2 StartSpeedVector => new Vector2( //todo use something instead Vector2 ???
-            StartSpeed * (float) Math.Cos(AngleInRad),
-            StartSpeed * (float) Math.Sin(AngleInRad));
 
         public IEnumerable<TrajectoryPoint> GetPoints(float timeIntervalInSeconds)
         {
             var currentTime = 0.0f;
             var currentPoint = StartPoint;
-            var currentSpeed = StartSpeedVector;
+            var currentSpeed = MathVector.CreateWithModuleAndAngle(StartSpeed, AngleInRad);
 
             while (true) //TODO refactor
             {
@@ -43,7 +39,7 @@ namespace Trajectory
                 currentPoint = CalculateNextPoint(
                     timeIntervalInSeconds, currentPoint, currentSpeed);
                 currentSpeed = CalculateNextSpeed(
-                    currentSpeed, timeIntervalInSeconds);
+                    currentSpeed, timeIntervalInSeconds, CalculateWindImpact(currentTime));
 
                 if (currentPoint.Y < 0)
                 {
@@ -54,15 +50,17 @@ namespace Trajectory
             }
         }
 
-        private Vector2 CalculateNextSpeed(Vector2 currentSpeed, float dt)
+        private MathVector CalculateNextSpeed(MathVector currentSpeed, float dt, float windImpact)
         {
-            var nextSpeedX = currentSpeed.X * (1 - dt * ResistanceCoefficient / Mass);
-            var nextSpeedY = currentSpeed.Y - dt * (G + ResistanceCoefficient * currentSpeed.Y / Mass);
+            var nextSpeedX = currentSpeed.X * (1 - dt * windImpact / Mass);
+            var nextSpeedY = currentSpeed.Y - dt * (G + windImpact * currentSpeed.Y / Mass);
 
-            return new Vector2(nextSpeedX, nextSpeedY);
+            return new MathVector(nextSpeedX, nextSpeedY);
         }
 
-        private PointF CalculateNextPoint(float dt, PointF currentPoint, Vector2 currentSpeed)
+        private float CalculateWindImpact(float time) => ResistanceCoefficient * time + 0.1f;
+
+        private PointF CalculateNextPoint(float dt, PointF currentPoint, MathVector currentSpeed)
         {
             var nextX = currentPoint.X + dt * currentSpeed.X;
             var nextY = currentPoint.Y + dt * currentSpeed.Y;
