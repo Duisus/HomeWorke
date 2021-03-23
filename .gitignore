@@ -1,5 +1,6 @@
-﻿/Trajectory/bin/
-/Trajectory/obj/
-/.idea/
-/TrajectoryTests/bin/
-/TrajectoryTests/obj/
+﻿/.idea/
+/TrajectoryTask/Trajectory/bin/
+/TrajectoryTask/Trajectory/obj/
+/TrajectoryTask/TrajectoryTests/bin/
+/TrajectoryTask/TrajectoryTests/obj/
+/TrajectoryTask/.idea/
