@@ -46,7 +46,7 @@ namespace Trajectory
                 nextPoint.Y = 0;
             
             var nextSpeed = CalculateNextSpeed(moveState, dt);
-            var nextTime = moveState.Time + dt;
+            var nextTime = moveState.Time + dt;  // TODO round time or add function in MoveState for this
 
             return new MoveState(nextPoint, nextSpeed, nextTime);
         }
