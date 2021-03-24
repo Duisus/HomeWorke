@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Numerics;
 
 namespace Trajectory
 {
-    public class TrajectoryCalculatorWithResistance
+    public class TrajectoryCalculatorWithResistance  // TODO add interface
     {
         private const float G = 9.81f;
 
@@ -27,47 +26,53 @@ namespace Trajectory
 
         public IEnumerable<TrajectoryPoint> GetPoints(float timeIntervalInSeconds)
         {
-            var currentTime = 0.0f;
-            var currentPoint = StartPoint;
-            var currentSpeed = MathVector.CreateFromMagnitudeAndAngle(StartSpeed, AngleInRad);
+            var moveState = new MoveState(
+                StartPoint,
+                MathVector.CreateFromMagnitudeAndAngle(StartSpeed, AngleInRad),
+                0.0f);
 
-            while (true)  //TODO refactor
+            while (moveState.Coords.Y != 0 || moveState.Time == 0)
             {
-                yield return new TrajectoryPoint(currentTime, currentPoint);
-
-                currentTime += timeIntervalInSeconds;
-                currentPoint = CalculateNextPoint(
-                    timeIntervalInSeconds, currentPoint, currentSpeed);
-                currentSpeed = CalculateNextSpeed(
-                    currentSpeed, timeIntervalInSeconds, CalculateWindImpact(currentTime));
-
-                if (currentPoint.Y < 0)
-                {
-                    var lastPoint = new PointF(currentPoint.X, 0);
-                    yield return new TrajectoryPoint(currentTime, lastPoint);
-                    yield break;
-                }
+                yield return new TrajectoryPoint(moveState.Time, moveState.Coords);
+                moveState = CalculateNextMoveState(moveState, timeIntervalInSeconds);
             }
+            yield return new TrajectoryPoint(moveState.Time, moveState.Coords);
         }
 
-        private MathVector CalculateNextSpeed(MathVector currentSpeed, float dt, float windImpact)
+        private MoveState CalculateNextMoveState(MoveState moveState, float dt)
         {
-            var nextSpeedX = currentSpeed.X * (1 - dt * windImpact / Mass);
-            var nextSpeedY = currentSpeed.Y - dt * (G + windImpact * currentSpeed.Y / Mass);
+            var nextPoint = CalculateNextPoint(moveState, dt);
+            if (nextPoint.Y < 0)
+                nextPoint.Y = 0;
+            
+            var nextSpeed = CalculateNextSpeed(moveState, dt);
+            var nextTime = moveState.Time + dt;
+
+            return new MoveState(nextPoint, nextSpeed, nextTime);
+        }
+
+        private PointF CalculateNextPoint(MoveState moveState, float dt)
+        {
+            var nextX = moveState.Coords.X + dt * moveState.Speed.X;
+            var nextY = moveState.Coords.Y + dt * moveState.Speed.Y;
+
+            return new PointF(
+                (float) Math.Round(nextX, 4),
+                (float) Math.Round(nextY, 4));  // TODO move rounding functions to MoveState?
+        }
+
+        private MathVector CalculateNextSpeed(MoveState moveState, float dt)
+        {
+            var windImpact = CalculateWindImpact(moveState.Time);
+            var nextSpeedX = moveState.Speed.X * (1 - dt * windImpact / Mass);
+            var nextSpeedY = moveState.Speed.Y - dt * (G + windImpact * moveState.Speed.Y / Mass);
 
             return new MathVector(nextSpeedX, nextSpeedY);
         }
 
-        private float CalculateWindImpact(float time) => ResistanceCoefficient * time + 0.1f;  // TODO change formula ? 
-
-        private PointF CalculateNextPoint(float dt, PointF currentPoint, MathVector currentSpeed)
-        {
-            var nextX = currentPoint.X + dt * currentSpeed.X;
-            var nextY = currentPoint.Y + dt * currentSpeed.Y;
-
-            return new PointF(
-                (float) Math.Round(nextX, 4),
-                (float) Math.Round(nextY, 4));
+        private float CalculateWindImpact(float time)
+        { 
+            return ResistanceCoefficient * time + 0.1f;
         }
     }
 }
