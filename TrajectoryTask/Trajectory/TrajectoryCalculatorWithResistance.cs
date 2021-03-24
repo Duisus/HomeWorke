@@ -29,9 +29,9 @@ namespace Trajectory
         {
             var currentTime = 0.0f;
             var currentPoint = StartPoint;
-            var currentSpeed = MathVector.CreateWithModuleAndAngle(StartSpeed, AngleInRad);
+            var currentSpeed = MathVector.CreateFromMagnitudeAndAngle(StartSpeed, AngleInRad);
 
-            while (true) //TODO refactor
+            while (true)  //TODO refactor
             {
                 yield return new TrajectoryPoint(currentTime, currentPoint);
 
@@ -58,7 +58,7 @@ namespace Trajectory
             return new MathVector(nextSpeedX, nextSpeedY);
         }
 
-        private float CalculateWindImpact(float time) => ResistanceCoefficient * time + 0.1f;
+        private float CalculateWindImpact(float time) => ResistanceCoefficient * time + 0.1f;  // TODO change formula ? 
 
         private PointF CalculateNextPoint(float dt, PointF currentPoint, MathVector currentSpeed)
         {
