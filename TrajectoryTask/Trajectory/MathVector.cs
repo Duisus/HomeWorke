@@ -13,10 +13,10 @@ namespace Trajectory
             Y = y;
         }
         
-        public static MathVector CreateWithModuleAndAngle(float module, float AngleInRad)
+        public static MathVector CreateFromMagnitudeAndAngle(float magnitude, float angleInRad)
         {
-            var x = module * (float) Math.Cos(AngleInRad);
-            var y = module * (float) Math.Sin(AngleInRad);
+            var x = magnitude * (float) Math.Cos(angleInRad);
+            var y = magnitude * (float) Math.Sin(angleInRad);
 
             return new MathVector(x, y);
         }
