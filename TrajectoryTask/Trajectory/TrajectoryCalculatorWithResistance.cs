@@ -64,6 +64,7 @@ namespace Trajectory
         private MathVector CalculateNextSpeed(MoveState moveState, float dt)
         {
             var windImpact = CalculateWindImpact(moveState.Time);
+            // TODO fix formula (problem: negative * negative)
             var nextSpeedX = moveState.Speed.X * (1 - dt * windImpact / Mass);
             var nextSpeedY = moveState.Speed.Y - dt * (G + windImpact * moveState.Speed.Y / Mass);
 
