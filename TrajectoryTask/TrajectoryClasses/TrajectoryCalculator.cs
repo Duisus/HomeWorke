@@ -72,8 +72,8 @@ namespace Trajectory
         }
 
         private float CalculateWindImpact(float time)
-        { 
-            return ResistanceCoefficient * time + 0.1f;
+        {
+            return ResistanceCoefficient; // todo return ResistanceCoefficient * time + 0.1f;
         }
     }
 }
