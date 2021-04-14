@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Trajectory
+namespace TrajectoryClasses
 {
     public class TrajectoryCalculator  // TODO add interface
     {

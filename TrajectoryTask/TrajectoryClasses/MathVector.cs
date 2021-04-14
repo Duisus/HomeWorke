@@ -1,6 +1,6 @@
 using System;
 
-namespace Trajectory
+namespace TrajectoryClasses
 {
     public class MathVector
     {

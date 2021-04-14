@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Trajectory
+namespace TrajectoryClasses
 {
     public class MoveState
     {

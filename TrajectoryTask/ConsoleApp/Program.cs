@@ -3,8 +3,9 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using TrajectoryClasses;
 
-namespace Trajectory
+namespace ConsoleApp
 {
     internal class Program
     {

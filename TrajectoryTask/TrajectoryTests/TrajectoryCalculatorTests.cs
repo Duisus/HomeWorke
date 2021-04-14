@@ -4,7 +4,7 @@ using ApprovalTests;
 using ApprovalTests.Reporters;
 using FluentAssertions;
 using NUnit.Framework;
-using Trajectory;
+using TrajectoryClasses;
 
 namespace TrajectoryTests
 {
