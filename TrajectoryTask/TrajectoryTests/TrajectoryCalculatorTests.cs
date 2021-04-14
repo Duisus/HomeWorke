@@ -8,15 +8,15 @@ using Trajectory;
 
 namespace TrajectoryTests
 {
-    public class TrajectoryCalculatorWithResistanceTests
+    public class TrajectoryCalculatorTests
     {
         private const float G = 9.81f;
-        private TrajectoryCalculatorWithResistance calculator;
+        private TrajectoryCalculator calculator;
 
         [SetUp]
         public void Setup()
         {
-            calculator = new TrajectoryCalculatorWithResistance(
+            calculator = new TrajectoryCalculator(
                 new PointF(0, 0),
                 50,
                 30,
@@ -28,7 +28,7 @@ namespace TrajectoryTests
         public void GetPoints_FirstPointIsStartPointFromCtor()
         {
             var startPoint = new PointF(10.3f, 15);
-            calculator = new TrajectoryCalculatorWithResistance(
+            calculator = new TrajectoryCalculator(
                 startPoint, 40.31f, 30, 3.1f, 1);
 
             calculator.GetPoints(0.1f).First().Coords

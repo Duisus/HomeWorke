@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Trajectory\Trajectory.csproj" />
+      <ProjectReference Include="..\ConsoleApp\ConsoleApp.csproj" />
     </ItemGroup>
 
 </Project>

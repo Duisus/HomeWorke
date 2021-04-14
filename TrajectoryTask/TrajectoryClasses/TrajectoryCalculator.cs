@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Trajectory
 {
-    public class TrajectoryCalculatorWithResistance  // TODO add interface
+    public class TrajectoryCalculator  // TODO add interface
     {
         private const float G = 9.81f;
 
@@ -14,7 +14,7 @@ namespace Trajectory
         public float ResistanceCoefficient { get; }
         public float Mass { get; }
 
-        public TrajectoryCalculatorWithResistance( // TODO create builder or configuration class
+        public TrajectoryCalculator( // TODO create builder or configuration class
             PointF startPoint, float startSpeed, float angleInDeg, float mass, float resistanceCoefficient)
         {
             StartSpeed = startSpeed;

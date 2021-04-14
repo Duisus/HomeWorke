@@ -29,7 +29,7 @@ namespace Trajectory
                 str => float.Parse(str, CultureInfo.InvariantCulture));
         }
 
-        private static TrajectoryCalculatorWithResistance CreateTrajectoryCalculator(
+        private static TrajectoryCalculator CreateTrajectoryCalculator(
             Dictionary<string, float> parsedArgs)
         {
             float x0 = 0;
@@ -39,7 +39,7 @@ namespace Trajectory
             if (parsedArgs.TryGetValue("y0", out var startY))
                 y0 = startY;
 
-            return new TrajectoryCalculatorWithResistance(
+            return new TrajectoryCalculator(
                 new PointF(x0, y0),
                 parsedArgs["speed"],
                 parsedArgs["angle"],

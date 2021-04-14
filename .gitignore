@@ -1,6 +1,8 @@
 ﻿/.idea/
-/TrajectoryTask/Trajectory/bin/
-/TrajectoryTask/Trajectory/obj/
+/TrajectoryTask/ConsoleApp/bin/
+/TrajectoryTask/ConsoleApp/obj/
 /TrajectoryTask/TrajectoryTests/bin/
 /TrajectoryTask/TrajectoryTests/obj/
 /TrajectoryTask/.idea/
+/TrajectoryTask/TrajectoryClasses/bin
+/TrajectoryTask/TrajectoryClasses/obj
