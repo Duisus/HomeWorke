@@ -4,5 +4,7 @@
 /TrajectoryTask/TrajectoryTests/bin/
 /TrajectoryTask/TrajectoryTests/obj/
 /TrajectoryTask/.idea/
-/TrajectoryTask/TrajectoryClasses/bin
-/TrajectoryTask/TrajectoryClasses/obj
+/TrajectoryTask/TrajectoryClasses/bin/
+/TrajectoryTask/TrajectoryClasses/obj/
+/TrajectoryTask/WpfApp/bin/
+/TrajectoryTask/WpfApp/obj/
