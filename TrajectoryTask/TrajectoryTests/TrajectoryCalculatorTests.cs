@@ -24,34 +24,34 @@ namespace TrajectoryTests
         }
 
         [Test]
-        public void GetPoints_FirstPointIsStartPointFromCtor()
+        public void CalculateTrajectory_FirstPointIsStartPointFromCtor()
         {
             var startPoint = new PointF(10.3f, 15);
             calculator = new TrajectoryCalculator(
                 startPoint, 40.31f, 30, 3.1f, 1);
 
-            calculator.GetPoints(0.1f).First().Coords
+            calculator.CalculateTrajectory(0.1f).MoveStates.First().Coords
                 .Should().Be(startPoint);
         }
 
         [Test]
-        public void GetPoints_LastPointHasZeroYCoordinate()
+        public void CalculateTrajectory_LastPointHasZeroYCoordinate()
         {
-            calculator.GetPoints(0.1f).Last().Coords.Y
+            calculator.CalculateTrajectory(0.1f).MoveStates.Last().Coords.Y
                 .Should().Be(0);
         }
 
         [Test]
-        public void GetPoints_LastPointHasXCoordinateThatEqualToFlightRange()
+        public void CalculateTrajectory_TrajectoryHasCorrectDistance()
         {
-            calculator.GetPoints(0.01f).Last().Coords.X
+            calculator.CalculateTrajectory(0.01f).Distance
                 .Should().BeApproximately(97.6f, 0.05f); // TODO refactor
         }
 
         [Test]
-        public void GetPoints_HighestPointHasCorrectYCoordinate()
+        public void GetPoints_TrajectoryHasCorrectMaxHeight()
         {
-            calculator.GetPoints(0.01f).Max(trajPoint => trajPoint.Coords.Y)
+            calculator.CalculateTrajectory(0.01f).MaxHeight
                 .Should().BeApproximately(20.8f, 0.05f); // TODO refactor
         }
 
@@ -59,9 +59,9 @@ namespace TrajectoryTests
         [UseReporter(typeof(VisualStudioReporter))]
         public void ApprovalTest()
         {
-            var resultPoints = calculator.GetPoints(0.1f);
+            var trajectory = calculator.CalculateTrajectory(0.1f);
             var strFromAllPoints = string.Join(
-                '\n', resultPoints.Select(p => p.ToString()));
+                '\n', trajectory.MoveStates.Select(state => state.ToString()));
             
             Approvals.Verify(strFromAllPoints);
         }
