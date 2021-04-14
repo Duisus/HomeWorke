@@ -13,7 +13,7 @@ namespace Trajectory
             Y = y;
         }
         
-        public static MathVector CreateFromMagnitudeAndAngle(float magnitude, float angleInRad)
+        public static MathVector FromMagnitudeAndAngle(float magnitude, float angleInRad)
         {
             var x = magnitude * (float) Math.Cos(angleInRad);
             var y = magnitude * (float) Math.Sin(angleInRad);

@@ -6,13 +6,18 @@ namespace Trajectory
     {
         public PointF Coords { get; }
         public MathVector Speed { get; }
-        public float Time { get; }
+        public float TimeInSeconds { get; }
 
-        public MoveState(PointF coords, MathVector speed, float time)
+        public MoveState(PointF coords, MathVector speed, float timeInSeconds)
         {
             Coords = coords;
             Speed = speed;
-            Time = time;
+            TimeInSeconds = timeInSeconds;
+        }
+
+        public override string ToString()
+        {
+            return $"Time: {TimeInSeconds}, Coords: {Coords}, Speed: ({Speed.X}, {Speed.Y})";
         }
     }
 }

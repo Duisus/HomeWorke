@@ -24,19 +24,25 @@ namespace Trajectory
             Mass = mass;
         }
 
-        public IEnumerable<TrajectoryPoint> GetPoints(float timeIntervalInSeconds)
+        public Trajectory CalculateTrajectory(float timeIntervalInSeconds)
+        {
+            return new Trajectory(
+                CalculateMoveStates(timeIntervalInSeconds));
+        }
+
+        private IEnumerable<MoveState> CalculateMoveStates(float timeIntervalInSeconds)
         {
             var moveState = new MoveState(
                 StartPoint,
-                MathVector.CreateFromMagnitudeAndAngle(StartSpeed, AngleInRad),
+                MathVector.FromMagnitudeAndAngle(StartSpeed, AngleInRad),
                 0.0f);
 
-            while (moveState.Coords.Y != 0 || moveState.Time == 0)
+            while (moveState.Coords.Y != 0 || moveState.TimeInSeconds == 0)
             {
-                yield return new TrajectoryPoint(moveState.Time, moveState.Coords);
+                yield return moveState;
                 moveState = CalculateNextMoveState(moveState, timeIntervalInSeconds);
             }
-            yield return new TrajectoryPoint(moveState.Time, moveState.Coords);
+            yield return moveState;
         }
 
         private MoveState CalculateNextMoveState(MoveState moveState, float dt)
@@ -46,7 +52,7 @@ namespace Trajectory
                 nextPoint.Y = 0;
             
             var nextSpeed = CalculateNextSpeed(moveState, dt);
-            var nextTime = moveState.Time + dt;  // TODO round time or add function in MoveState for this
+            var nextTime = moveState.TimeInSeconds + dt;  // TODO round time or add function in MoveState for this
 
             return new MoveState(nextPoint, nextSpeed, nextTime);
         }
@@ -63,7 +69,7 @@ namespace Trajectory
 
         private MathVector CalculateNextSpeed(MoveState moveState, float dt)
         {
-            var windImpact = CalculateWindImpact(moveState.Time);
+            var windImpact = CalculateWindImpact(moveState.TimeInSeconds);
             // TODO fix formula (problem: negative * negative)
             var nextSpeedX = moveState.Speed.X * (1 - dt * windImpact / Mass);
             var nextSpeedY = moveState.Speed.Y - dt * (G + windImpact * moveState.Speed.Y / Mass);

@@ -14,12 +14,12 @@ namespace Trajectory
 
             var parsedArgs = GetParsedArgs(parser.GetArgValueByName("source"));
 
-            var points = CreateTrajectoryCalculator(parsedArgs)
-                .GetPoints(parsedArgs["interval"]);
+            var trajectory = CreateTrajectoryCalculator(parsedArgs)
+                .CalculateTrajectory(parsedArgs["interval"]);
 
             File.WriteAllLines(
                 parser.GetArgValueByName("destination"),
-                points.Select(point => point.ToString()));
+                trajectory.MoveStates.Select(state => state.ToString()));
         }
 
         private static Dictionary<string, float> GetParsedArgs(string sourceFilePath)
