@@ -10,7 +10,6 @@ namespace TrajectoryTests
 {
     public class TrajectoryCalculatorTests
     {
-        private const float G = 9.81f;
         private TrajectoryCalculator calculator;
 
         [SetUp]
@@ -43,17 +42,17 @@ namespace TrajectoryTests
         }
 
         [Test]
-        public void GetPoint_LastPointHasXCoordinateThatEqualToFlightRange()
+        public void GetPoints_LastPointHasXCoordinateThatEqualToFlightRange()
         {
             calculator.GetPoints(0.01f).Last().Coords.X
-                .Should().BeApproximately(5, 0.05f); // TODO refactor
+                .Should().BeApproximately(97.6f, 0.05f); // TODO refactor
         }
 
         [Test]
-        public void GetPoint_HighestPointHasCorrectYCoordinate()
+        public void GetPoints_HighestPointHasCorrectYCoordinate()
         {
             calculator.GetPoints(0.01f).Max(trajPoint => trajPoint.Coords.Y)
-                .Should().BeApproximately(1.75f, 0.05f); // TODO refactor
+                .Should().BeApproximately(20.8f, 0.05f); // TODO refactor
         }
 
         [Test]
