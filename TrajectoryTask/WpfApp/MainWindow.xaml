@@ -65,10 +65,10 @@
         <oxy:Plot Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="7" Name="TrajectoryPlot" 
                   Title="Trajectory" Background="Pink">
             <oxy:Plot.Axes>
-                <oxy:LinearAxis Name="XAxis" Minimum="0" Position="Bottom"
-                                Key="Horizontal" IsZoomEnabled="False" />
-                <oxy:LinearAxis Name="YAxis" Minimum="0" Position="Left"
-                                Key="Vertical" IsZoomEnabled="False" />
+                <oxy:LinearAxis Name="XAxis" Minimum="-0.07" Position="Bottom"
+                                Key="Horizontal" IsZoomEnabled="False" IsPanEnabled="False" />
+                <oxy:LinearAxis Name="YAxis" Minimum="-0.07" Position="Left"
+                                Key="Vertical" IsZoomEnabled="False" IsPanEnabled="False" />
             </oxy:Plot.Axes>
             <oxy:Plot.Series>
                 <oxy:LineSeries Name="LineSeries" MarkerType="Circle" XAxisKey="Horizontal" YAxisKey="Vertical" 

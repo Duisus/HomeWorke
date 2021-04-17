@@ -25,6 +25,8 @@ namespace WpfApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const int AxisAdditionForGoodViewing = 4;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -65,17 +67,24 @@ namespace WpfApp
 
         private void AnimateTrajectory(Trajectory trajectory)
         {
-            LineSeries.ItemsSource = new List<DataPoint>(new[] { new DataPoint(0, 0) });
-            XAxis.Minimum = trajectory.MoveStates.First().Coords.X;
-            YAxis.Minimum = trajectory.MoveStates.First().Coords.Y;
-            XAxis.Maximum = trajectory.Distance + 4;
-            YAxis.Maximum = trajectory.MaxHeight + 4;
-            Dispatcher.Invoke(() => TrajectoryPlot.ActualModel.InvalidatePlot(true));
+            PreparePlotForAnimation(trajectory);
 
             var sleepTime = (int)(GetFloatFromBox(TimeBox) * 1000);
             Task.Run(() => StartTrajectoryAnimation(
                 trajectory,
                 sleepTime));
+        }
+
+        private void PreparePlotForAnimation(Trajectory trajectory)
+        {
+            LineSeries.ItemsSource = new List<DataPoint>(new[]
+            {
+                new DataPoint(trajectory.StartPoint.X, trajectory.StartPoint.Y)
+            });
+            XAxis.Maximum = trajectory.Distance + AxisAdditionForGoodViewing;
+            YAxis.Maximum = trajectory.MaxHeight + AxisAdditionForGoodViewing;
+            
+            Dispatcher.Invoke(() => TrajectoryPlot.ActualModel.InvalidatePlot(true));
         }
 
         private void StartTrajectoryAnimation(Trajectory trajectory, int sleepTime)
