@@ -11,7 +11,7 @@ namespace ConsoleApp
     {
         private static void Main(string[] args)
         {
-            var parser = new CommandLineParser(args);
+            var parser = new ArgsParser(args);
 
             var parsedArgs = GetParsedArgs(parser.GetArgValueByName("source"));
 
@@ -25,7 +25,7 @@ namespace ConsoleApp
 
         private static Dictionary<string, float> GetParsedArgs(string sourceFilePath)
         {
-            var parser = new CommandLineParser(File.ReadLines(sourceFilePath));
+            var parser = new ArgsParser(File.ReadLines(sourceFilePath));
             return parser.ParseWithFunc(
                 str => float.Parse(str, CultureInfo.InvariantCulture));
         }
