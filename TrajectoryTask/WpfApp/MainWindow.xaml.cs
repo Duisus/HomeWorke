@@ -105,5 +105,15 @@ namespace WpfApp
             LineSeries.ItemsSource = trajectory.MoveStates
                 .Select(state => new DataPoint(state.Coords.X, state.Coords.Y));
         }
+
+        private void LoadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
