@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ConsoleApp;
+using Microsoft.Win32;
 using OxyPlot;
 using TrajectoryClasses;
 
@@ -26,7 +20,18 @@ namespace WpfApp
     public partial class MainWindow : Window
     {
         private const int AxisAdditionForGoodViewing = 4;
+        private Trajectory _lastTrajectory;
         
+        private Trajectory LastTrajectory
+        {
+            get => _lastTrajectory;
+            set
+            {
+                SaveButton.IsEnabled = true;
+                _lastTrajectory = value;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +41,8 @@ namespace WpfApp
         {
             var trajectory = CreateTrajectoryCalculator()
                 .CalculateTrajectory(GetFloatFromBox(TimeBox));
+
+            LastTrajectory = trajectory;
 
             UpdateLabels(trajectory);
             AnimateTrajectory(trajectory);
@@ -108,12 +115,68 @@ namespace WpfApp
 
         private void LoadButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt";
+            
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var args = File.ReadAllLines(openFileDialog.FileName);
+                SetDataInTextBoxes(
+                    ArgsParser.CreateDict(args));
+            }
+        }
+
+        private void SetDataInTextBoxes(Dictionary<string, string> namedArgs)
+        {
+            foreach (var argName in namedArgs.Keys)
+            {
+                var argValue = namedArgs[argName];
+                switch (argName)
+                {
+                    case "speed":
+                        SpeedBox.Text = argValue;
+                        break;
+                    case "angle":
+                        AngleBox.Text = argValue;
+                        break;
+                    case "interval":
+                        TimeBox.Text = argValue;
+                        break;
+                    case "mass":
+                        MassBox.Text = argValue;
+                        break;
+                    case "k":
+                        ResistanceBox.Text = argValue;
+                        break;
+                    case "x0":
+                        X0Box.Text = argValue;
+                        break;
+                    case "y0":
+                        Y0Box.Text = argValue;
+                        break;
+                }
+            }
         }
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text file (*.txt)|*.txt";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var writingThread = new Thread(() =>
+                    SaveTrajectoryInFile(saveFileDialog.FileName));
+                writingThread.Start();
+            }
+        }
+
+        private void SaveTrajectoryInFile(string filePath)
+        {
+            var serializedTrajectory = LastTrajectory.MoveStates
+                .Select(state => state.ToString());
+            
+            File.WriteAllLines(filePath, serializedTrajectory);
         }
     }
 }
