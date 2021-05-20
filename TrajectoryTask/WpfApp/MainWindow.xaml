@@ -3,11 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp"
         xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" MinHeight="200" MinWidth="400" Height="500" Width="1100">
-    <Grid Background="HotPink">
+    <Grid Background="HotPink" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -21,6 +20,7 @@
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
@@ -38,7 +38,7 @@
                 <Setter Property="HorizontalAlignment" Value="Right" />
                 <Setter Property="FontSize" Value="14" />
             </Style>
-            
+
             <Style TargetType="{x:Type Button}">
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="Background" Value="MediumPurple" />
@@ -48,7 +48,7 @@
         <TextBox Grid.Row="0" Grid.Column="1" Text="0" Name="X0Box" />
         <TextBox Grid.Row="0" Grid.Column="3" Text="1" Name="MassBox" />
         <TextBox Grid.Row="0" Grid.Column="5" Text="10" Name="SpeedBox" />
-        <TextBox Grid.Row="0" Grid.Column="6" Text="0.1" Name="TimeBox" />
+        <TextBox Grid.Row="0" Grid.Column="7" Text="0.1" Name="TimeBox" />
         <TextBox Grid.Row="1" Grid.Column="1" Text="0" Name="Y0Box" />
         <TextBox Grid.Row="1" Grid.Column="3" Text="45" Name="AngleBox" />
         <TextBox Grid.Row="1" Grid.Column="5" Text="1" Name="ResistanceBox" />
@@ -56,6 +56,7 @@
         <Label Grid.Row="0" Grid.Column="0" Content="x0" />
         <Label Grid.Row="0" Grid.Column="2" Content="Mass" />
         <Label Grid.Row="0" Grid.Column="4" Content="Speed" />
+        <Label Grid.Row="0" Grid.Column="6" Content="dt" />
         <Label Grid.Row="1" Grid.Column="0" Content="y0" />
         <Label Grid.Row="1" Grid.Column="2" Content="Angle" />
         <Label Grid.Row="1" Grid.Column="4" Content="k" />
@@ -67,12 +68,13 @@
         <Label Grid.Row="2" Grid.Column="5" Name="FlightTimeLabel" HorizontalAlignment="Left"
                ContentStringFormat="Flight time: {0} s" />
 
-        <Button Grid.Row="1" Grid.Column="6" Content="Throw" Click="ThrowButton_OnClick" />
-        <Button Grid.Row="0" Grid.Column="7" Content="Load file" Click="LoadButton_OnClick" />
-        <Button Grid.Row="1" Grid.Column="7" Name="SaveButton" Content="Save" IsEnabled="False"
+        <Button Grid.Row="1" Grid.Column="7" Content="Throw" Click="ThrowButton_OnClick" />
+        <Button Grid.Row="0" Grid.Column="8" Content="Load file" Margin="10,0,0,0"
+                Click="LoadButton_OnClick" />
+        <Button Grid.Row="1" Grid.Column="8" Name="SaveButton" Margin="10,0,0,0" Content="Save" IsEnabled="False"
                 Click="SaveButton_OnClick" />
 
-        <oxy:Plot Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="8" Name="TrajectoryPlot" 
+        <oxy:Plot Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="9" Name="TrajectoryPlot"
                   Title="Trajectory" Background="Pink">
             <oxy:Plot.Axes>
                 <oxy:LinearAxis Name="XAxis" Minimum="-0.07" Position="Bottom"
@@ -81,7 +83,7 @@
                                 Key="Vertical" IsZoomEnabled="False" IsPanEnabled="False" />
             </oxy:Plot.Axes>
             <oxy:Plot.Series>
-                <oxy:LineSeries Name="LineSeries" MarkerType="Circle" XAxisKey="Horizontal" YAxisKey="Vertical" 
+                <oxy:LineSeries Name="LineSeries" MarkerType="Circle" XAxisKey="Horizontal" YAxisKey="Vertical"
                                 Color="MediumPurple" />
             </oxy:Plot.Series>
         </oxy:Plot>
